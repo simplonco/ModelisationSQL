@@ -83,6 +83,15 @@ Vous devrez specifier les clés primaires et étrangères et les eventuelles tab
 
 ### Vous pouvez à présent créer les requête SQL qui serviront dans l'APPLICATION SERVER finale en vous appuyant sur les user stories ou les use cases.
 
+Ecrire les requêtes SQL pour :
+
+* Afficher le nom de la liste dans laquelle se trouve la carte 3
+* Afficher toutes les cards de la list qui a l'id 3
+* Afficher toutes les cards du user qui a l'id 1
+* Afficher toutes les users associés à la card qui a l'id 2
+* Afficher les lists avec leurs cards associées
+* Afficher les lists avec pour chacune les cards et pour chaque cards les users associés
+
 
 
 
