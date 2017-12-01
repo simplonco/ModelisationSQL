@@ -53,6 +53,18 @@ De par l'ajout d'une gestion personnelle des déplacements de carte par les appr
 
 A vous de jouer !!!
 
+# exercices sql SELECT
+
+## Afficher toutes les cards du user 1
+
+## Afficher tous les users qui ont des cards en lists 3
+
+## Pour plus de détail, ajouter, pour chaque utilisateur, le nom des cards qu'ils ont en liste 1
+
+## Afficher les cards avec les lists associés
+
+## Afficher les listes avec leurs tâches associées et avec pour chaque tâches, la liste des utilisateurs associés
+
 
 
 
