@@ -88,10 +88,41 @@ WHERE list_id = 3
 GROUP BY user_id
 ```
 
+```sql
+select DISTINCT users.id, 
+CONCAT(users.firstname, ' ',users.lastname) as userName,
+JSON_ARRAYAGG(JSON_OBJECT('id',cards.id, 'name', cards.name)) as cards 
+FROM users_cards_lists
+JOIN users ON user_id = users.id
+JOIN cards ON card_id = cards.id
+WHERE list_id = 3
+GROUP BY user_id
+```
+
 ## Afficher les cards avec les lists associés
 
-## Afficher les listes avec leurs tâches associées et avec pour chaque tâches, la liste des utilisateurs associés
+```sql
+SELECT c.id, c.name, cat.name
+FROM cards as c
+JOIN users_cards_lists as ucl ON ucl.card_id = c.id
+JOIN lists as cat ON cat.id = ucl.list_id
+ORDER BY c.id
+```
 
+## Afficher les listes avec leurs cards associées et avec pour chaque cards, la liste des utilisateurs associés
+
+```sql
+SELECT cat.name, JSON_ARRAYAGG( JSON_OBJECT('card', rucl.cname, 'users', rucl.users )) as cards
+FROM (
+  SELECT c.id as cid, c.name as cname, ucl.list_id as lid, JSON_ARRAYAGG( u.firstname ) as users
+  FROM users_cards_lists as ucl
+  JOIN users as u ON u.id = ucl.user_id
+  JOIN cards as c ON c.id = ucl.card_id
+  GROUP BY ucl.list_id, ucl.card_id
+) as rucl
+JOIN lists as cat ON cat.id = rucl.cid
+GROUP BY cat.id
+```
 
 
 
