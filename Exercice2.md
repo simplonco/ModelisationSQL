@@ -57,9 +57,36 @@ A vous de jouer !!!
 
 ## Afficher toutes les cards du user 1
 
+```sql
+select c.id as 'cardId', c.name as 'cardName' from users_cards_lists as ucl
+JOIN cards as c ON ucl.card_id = c.id
+where ucl.user_id = 1
+```
+
 ## Afficher tous les users qui ont des cards en lists 3
 
-## Pour plus de détail, ajouter, pour chaque utilisateur, le nom des cards qu'ils ont en liste 1
+solution 1
+
+```sql
+select DISTINCT users.id, CONCAT(users.firstname, ' ',users.lastname) as userName FROM users_cards_lists
+JOIN users ON user_id = users.id
+WHERE list_id = 3
+```
+
+## Pour plus de détail, ajouter, pour chaque utilisateur, le nom des cards qu'ils ont en list 3
+
+```sql
+select DISTINCT users.id, 
+CONCAT(users.firstname, ' ',users.lastname) as userName,
+GROUP_CONCAT( 
+CONCAT('{"id":"', cards.id, '","name":"',cards.name,'"}')
+ ) as cards 
+FROM users_cards_lists
+JOIN users ON user_id = users.id
+JOIN cards ON card_id = cards.id
+WHERE list_id = 3
+GROUP BY user_id
+```
 
 ## Afficher les cards avec les lists associés
 
