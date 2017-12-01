@@ -90,9 +90,29 @@ Ecrire les requêtes SQL pour :
 * Afficher toutes les cards du user qui a l'id 1
 * Afficher toutes les users associés à la card qui a l'id 2
 * Afficher les lists avec leurs cards associées
-* Afficher les lists avec pour chacune les cards et pour chaque cards les users associés
+* Afficher les lists avec pour chacune les cards et pour chaque 
+cards les users associés
 
-
+```sql
+SELECT l.name, 
+CONCAT('[', 
+  GROUP_CONCAT( 
+    CONCAT('{"name":"',c.name, '", users:',ucr.users,'}')
+  ),
+']') as cards 
+FROM (
+SELECT uc.card_id as cid, 
+  CONCAT( '["', GROUP_CONCAT(CONCAT(u.lastname,' ', u.firstname) 
+  SEPARATOR '","'), '"]')
+  as users
+  FROM users_cards as uc
+  JOIN users as u ON u.id = uc.user_id
+  GROUP BY uc.card_id
+) as ucr
+JOIN cards as c ON c.list_id = ucr.cid
+JOIN lists as l ON c.list_id = l.id
+GROUP BY l.id
+```
 
 
 
