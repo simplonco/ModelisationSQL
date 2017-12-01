@@ -114,5 +114,31 @@ JOIN lists as l ON c.list_id = l.id
 GROUP BY l.id
 ```
 
+En mysql 8
+
+```sql
+SELECT 
+l.id as id, 
+l.name as name, 
+JSON_ARRAYAGG(
+  JSON_OBJECT("id", c.id, "name", c.name, "users", ucr.users)
+) as cards 
+FROM
+(
+  SELECT uc.card_id as cid, 
+  JSON_ARRAYAGG(
+    JSON_OBJECT(
+      "id", uc.user_id, 
+      "name", CONCAT(u.lastname,' ', u.firstname)
+    )
+  ) as users
+  FROM users_cards as uc
+  JOIN users as u ON u.id = uc.user_id
+  GROUP BY uc.card_id
+) ucr
+JOIN cards as c ON ucr.cid = c.id
+JOIN lists as l ON l.id = c.list_id
+GROUP BY c.list_id;
+
 
 
