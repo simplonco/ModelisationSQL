@@ -32,7 +32,7 @@
 * En tant que U, je veux deplacer un article d'une categorie à l'autre
 * En tant que U, je veux créer une video
 * En tant que U, je veux ajouter une article dans une categorie
-* En tant que U, je veux ajouter une video dans une article
+* En tant que U, je veux ajouter des videos dans un article
 
 ## Tag system (sur blog)
 
