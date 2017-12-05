@@ -90,8 +90,7 @@ Ecrire les requêtes SQL pour :
 * Afficher toutes les cards du user qui a l'id 1
 * Afficher toutes les users associés à la card qui a l'id 2
 * Afficher les lists avec leurs cards associées
-* Afficher les lists avec pour chacune les cards et pour chaque 
-cards les users associés
+* Afficher les lists avec pour chacune les cards et pour chaque cards les users associés
 
 ```sql
 SELECT l.name, 
@@ -139,6 +138,6 @@ FROM
 JOIN cards as c ON ucr.cid = c.id
 JOIN lists as l ON l.id = c.list_id
 GROUP BY c.list_id;
-
+```
 
 
