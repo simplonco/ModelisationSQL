@@ -57,118 +57,13 @@ A vous de jouer !!!
 
 ## Afficher toutes les cards du user 1
 
-```sql
-select c.id as 'cardId', c.name as 'cardName' from users_cards_lists as ucl
-JOIN cards as c ON ucl.card_id = c.id
-where ucl.user_id = 1
-```
-
 ## Afficher tous les users qui ont des cards en lists 3
-
-solution 1
-
-```sql
-select DISTINCT users.id, CONCAT(users.firstname, ' ',users.lastname) as userName FROM users_cards_lists
-JOIN users ON user_id = users.id
-WHERE list_id = 3
-```
 
 ## Pour plus de détail, ajouter, pour chaque utilisateur, le nom des cards qu'ils ont en list 3
 
-```sql
-select DISTINCT users.id, 
-CONCAT(users.firstname, ' ',users.lastname) as userName,
-GROUP_CONCAT( 
-CONCAT('{"id":"', cards.id, '","name":"',cards.name,'"}')
- ) as cards 
-FROM users_cards_lists
-JOIN users ON user_id = users.id
-JOIN cards ON card_id = cards.id
-WHERE list_id = 3
-GROUP BY user_id
-```
-
-```sql
-select DISTINCT users.id, 
-CONCAT(users.firstname, ' ',users.lastname) as userName,
-JSON_ARRAYAGG(JSON_OBJECT('id',cards.id, 'name', cards.name)) as cards 
-FROM users_cards_lists
-JOIN users ON user_id = users.id
-JOIN cards ON card_id = cards.id
-WHERE list_id = 3
-GROUP BY user_id
-```
-
 ## Afficher les cards avec les lists associés
 
-```sql
-SELECT c.id, c.name, cat.name
-FROM cards as c
-JOIN users_cards_lists as ucl ON ucl.card_id = c.id
-JOIN lists as cat ON cat.id = ucl.list_id
-ORDER BY c.id
-```
-
-```sql
-SELECT lists.id, lists.name,  
-JSON_AGG(
- JSON_BUILD_OBJECT('id', cards.id, 'name', cards.name)
-) as cards
-FROM lists
-JOIN users_cards_lists as ucl ON lists.id = ucl.list_id
-JOIN cards ON cards.id = ucl.card_id
-GROUP BY lists.id
-```
-
-
-
-
-
 ## Afficher les listes avec leurs cards associées et avec pour chaque cards, la liste des utilisateurs associés
-
-### En postgreSQL
-
-#### la sous-requete 
-```sql
-SELECT c.id as cid, c.name as cname, ucl.list_id as lid, 
-  JSON_AGG( u.firstname ) as users
-  FROM users_cards_lists as ucl
-  JOIN users as u ON u.id = ucl.user_id
-  JOIN cards as c ON c.id = ucl.card_id
-  GROUP BY c.id, ucl.list_id
-```
-
-#### La requete final
-
-```sql
-SELECT l.name, JSON_AGG( JSON_BUILD_OBJECT('card', rucl.cname, 'users', rucl.users )) as cards
-FROM (
-  SELECT c.id as cid, c.name as cname, ucl.list_id as lid, 
-  JSON_AGG( u.firstname ) as users
-  FROM users_cards_lists as ucl
-  JOIN users as u ON u.id = ucl.user_id
-  JOIN cards as c ON c.id = ucl.card_id
-  GROUP BY c.id, ucl.list_id
-) as rucl
-JOIN lists as l ON l.id = rucl.lid
-GROUP BY l.id
-```
-
-### En mysql
-
-```sql
-SELECT cat.name, JSON_ARRAYAGG( JSON_OBJECT('card', rucl.cname, 'users', rucl.users )) as cards
-FROM (
-  SELECT c.id as cid, c.name as cname, ucl.list_id as lid, JSON_ARRAYAGG( u.firstname ) as users
-  FROM users_cards_lists as ucl
-  JOIN users as u ON u.id = ucl.user_id
-  JOIN cards as c ON c.id = ucl.card_id
-  GROUP BY ucl.list_id, ucl.card_id
-) as rucl
-JOIN lists as cat ON cat.id = rucl.cid
-GROUP BY cat.id
-```
-
 
 
 

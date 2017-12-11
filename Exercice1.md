@@ -89,55 +89,7 @@ Ecrire les requêtes SQL pour :
 * Afficher toutes les cards de la list qui a l'id 3
 * Afficher toutes les cards du user qui a l'id 1
 * Afficher toutes les users associés à la card qui a l'id 2
-* Afficher les lists avec leurs cards associées
+* Afficher les lists avec le nombre de cards associées pour chaque liste
+* Afficher les lists avec leurs cards associée.
 * Afficher les lists avec pour chacune les cards et pour chaque cards les users associés
-
-```sql
-SELECT l.name, 
-CONCAT('[', 
-  GROUP_CONCAT( 
-    CONCAT('{"name":"',c.name, '", users:',ucr.users,'}')
-  ),
-']') as cards 
-FROM (
-SELECT uc.card_id as cid, 
-  CONCAT( '["', GROUP_CONCAT(CONCAT(u.lastname,' ', u.firstname) 
-  SEPARATOR '","'), '"]')
-  as users
-  FROM users_cards as uc
-  JOIN users as u ON u.id = uc.user_id
-  GROUP BY uc.card_id
-) as ucr
-JOIN cards as c ON c.list_id = ucr.cid
-JOIN lists as l ON c.list_id = l.id
-GROUP BY l.id
-```
-
-En mysql 8
-
-```sql
-SELECT 
-l.id as id, 
-l.name as name, 
-JSON_ARRAYAGG(
-  JSON_OBJECT("id", c.id, "name", c.name, "users", ucr.users)
-) as cards 
-FROM
-(
-  SELECT uc.card_id as cid, 
-  JSON_ARRAYAGG(
-    JSON_OBJECT(
-      "id", uc.user_id, 
-      "name", CONCAT(u.lastname,' ', u.firstname)
-    )
-  ) as users
-  FROM users_cards as uc
-  JOIN users as u ON u.id = uc.user_id
-  GROUP BY uc.card_id
-) ucr
-JOIN cards as c ON ucr.cid = c.id
-JOIN lists as l ON l.id = c.list_id
-GROUP BY c.list_id;
-```
-
 
