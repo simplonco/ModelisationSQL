@@ -3,7 +3,7 @@
 ## Crownd funding website
 
 * En tant que U, je veux creer des projets
-* En tant que U, je veux donner une somme d'argent à refuhelp
+* En tant que U, je veux donner une somme d'argent à un projet
 * En tant que U, je veux donner une somme d'argent à un autre projet
 
 ## Meetup website
