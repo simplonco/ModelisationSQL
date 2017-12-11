@@ -22,8 +22,8 @@
 
 * En tant que U, je veux créer un dossier
 * En tant que U, je veux créer un fichier
-* En tant que U, je veux ajouter un fichier dans un dossier
-* En tant que U, je veux ajouter un dossier dans un dossier
+* En tant que U, je veux ajouter des fichiers dans un dossier
+* En tant que U, je veux ajouter des dossiers dans un dossier
 
 ## Blog
 
