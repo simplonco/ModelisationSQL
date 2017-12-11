@@ -29,7 +29,7 @@
 
 * En tant que U, je veux créer des categories
 * En tant que U, je veux créer des articles
-* En tant que U, je veux deplacer un article d'une categorie à l'autre
+* En tant que U, je veux deplacer des articles d'une categorie à l'autre
 * En tant que U, je veux créer une video
 * En tant que U, je veux ajouter un article dans une categorie
 * En tant que U, je veux ajouter des videos dans un article
