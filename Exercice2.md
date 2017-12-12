@@ -100,11 +100,21 @@ FROM users_cards
 GROUP BY list_id
 ```
 
-## Afficher toutes les lists avec pour chacune le nombre de card associés
-
 ## Afficher toutes les lists avec pour chacune le nombre de user associés
 
+```sql
+SELECT list_id, COUNT(list_id)
+FROM users_cards 
+GROUP BY list_id
+```
+
 ## Afficher toutes les lists avec pour chacune les noms des cards associés
+
+```sql
+SELECT list_id, COUNT(DISTINCT user_id) as user_count
+FROM users_cards 
+GROUP BY list_id
+```
 
 ## Afficher les listes avec leurs cards associées et avec pour chaque cards, la liste des utilisateurs associés
 
