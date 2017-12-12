@@ -63,9 +63,40 @@ JOIN cards ON users_cards.card_id = cards.id
 WHERE user_id=1
 ```
 
-## Afficher tous les users qui ont des cards en lists 3
+## Afficher tous les users qui ont des cards en lists avec l'id 3
+
+```sql
+SELECT DISTINCT user_id, CONCAT(users.firstname, ' ', users.lastname) as name FROM users_cards 
+JOIN users ON users_cards.user_id = users.id
+WHERE list_id=3
+```
 
 ## Pour plus de détail, ajouter, pour chaque utilisateur, le nom des cards qu'ils ont en list 3
+
+```sql
+SELECT DISTINCT user_id, CONCAT(users.firstname, ' ', users.lastname) as name FROM users_cards 
+JOIN users ON users_cards.user_id = users.id
+WHERE list_id=3
+```
+
+## Afficher toutes les lists avec pour chacune le nombre de card associés
+
+```sql
+SELECT user_id, 
+CONCAT(users.firstname, ' ', users.lastname) as name,
+JSON_AGG(cards.name) as cards_name
+FROM users_cards 
+JOIN users ON users_cards.user_id = users.id
+JOIN cards ON users_cards.card_id = cards.id
+WHERE list_id=3
+GROUP BY user_id, users.firstname, users.lastname
+```
+
+## Afficher toutes les lists avec pour chacune le nombre de card associés
+
+```sql
+
+```
 
 ## Afficher toutes les lists avec pour chacune le nombre de card associés
 
