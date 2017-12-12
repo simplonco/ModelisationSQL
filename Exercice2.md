@@ -116,7 +116,17 @@ FROM users_cards
 GROUP BY list_id
 ```
 
+## Afficher tous les noms de users qui ont au moins une carte dans la liste avec l'id 3
+
+
+
 ## Afficher les listes avec leurs cards associées et avec pour chaque cards, la liste des utilisateurs associés
+
+### on commence par faire la sous-requeque (sub-select)
+
+* Donne-moi toutes les cards avec pour chaque cards, la liste des utilisateurs associés
+
+
 
 
 
