@@ -55,13 +55,23 @@ A vous de jouer !!!
 
 # exercices sql SELECT
 
-## Afficher toutes les cards du user 1
+## Afficher toutes les cards du user avec l'id 1
+
+```sql
+SELECT card_id, cards.name FROM users_cards 
+JOIN cards ON users_cards.card_id = cards.id
+WHERE user_id=1
+```
 
 ## Afficher tous les users qui ont des cards en lists 3
 
 ## Pour plus de détail, ajouter, pour chaque utilisateur, le nom des cards qu'ils ont en list 3
 
-## Afficher les cards avec les lists associés
+## Afficher toutes les lists avec pour chacune le nombre de card associés
+
+## Afficher toutes les lists avec pour chacune le nombre de user associés
+
+## Afficher toutes les lists avec pour chacune les noms des cards associés
 
 ## Afficher les listes avec leurs cards associées et avec pour chaque cards, la liste des utilisateurs associés
 
