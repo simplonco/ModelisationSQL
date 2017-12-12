@@ -189,9 +189,7 @@ GROUP BY lists.id
 ```
 
 ```sql
-DROP view IF EXISTS resu;
-
-CREATE VIEW resu as SELECT card_id, cards.name as card_name, list_id, 
+CREATE TEMPORARY TABLE resu as SELECT card_id, cards.name as card_name, list_id, 
 JSON_AGG( users.firstname ) as user_name
 FROM users_cards
 JOIN users ON users.id = user_id
@@ -211,28 +209,65 @@ GROUP BY lists.id
 ```
 
 ```sql
-DROP view IF EXISTS resu;
-
-CREATE VIEW resu as SELECT card_id, cards.name as card_name, list_id, 
-JSON_AGG( users.firstname ) as user_name
+CREATE TEMPORARY TABLE cards_distrib as 
+SELECT 
+cards.name as card_name, 
+JSON_AGG( users.firstname ) as user_list,
+users_cards.list_id as lid
 FROM users_cards
 JOIN users ON users.id = user_id
 JOIN cards ON cards.id = card_id
 GROUP BY card_id, card_name, list_id;
 
 SELECT lists.id, 
+lists.name,
 JSON_AGG(
  JSON_BUILD_OBJECT('name',
-  r.card_name,
-  'users', r.user_name
+  cards_distrib.card_name,
+  'users', cards_distrib.user_list
  )
-)
-FROM lists
-JOIN resu as r ON lists.id = r.list_id
+) as cards
+FROM cards_distrib
+JOIN lists ON lists.id = cards_distrib.lid
 GROUP BY lists.id
 ```
 
+## Donne-moi toutes les cards du user qui a l'id 1
 
+```sql
+SELECT card_id, cards.name FROM users_cards
+JOIN cards ON users_cards.card_id = cards.id
+WHERE user_id  = 1
+```
+
+## Donne tous les users avec leur cards associées
+
+  ```sql
+  SELECT user_id, users.firstname, JSON_AGG(cards.name) FROM users_cards
+JOIN users ON users_cards.user_id = users.id
+JOIN cards ON users_cards.card_id = cards.id
+GROUP BY user_id, users.firstname
+  ```
+  
+ ## Donne-moi tous les utilisateurs qui ont au moins UNE CARD SUR LA liste avec l'id 2. 
+ 
+ ```sql
+SELECT DISTINCT CONCAT(users.lastname, ' ', users.firstname) as user_name from users_cards
+JOIN users ON users_cards.user_id = users.id
+WHERE list_id = 2
+```
+  
+  ## A partir de l'exercice précédent, ajouter une colonne avec les cards associés.
+
+```sql
+SELECT CONCAT(users.lastname, ' ', users.firstname) as user_name,
+... as cards
+FROM users_cards
+JOIN users ON users_cards.user_id = users.id
+JOIN ...
+WHERE list_id = 2
+GROUP BY ...
+```
 
 
 
