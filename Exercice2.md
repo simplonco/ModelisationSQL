@@ -126,7 +126,89 @@ GROUP BY list_id
 
 * Donne-moi toutes les cards avec pour chaque cards, la liste des utilisateurs associés
 
+```sql
+SELECT card_id, list_id, 
+JSON_AGG( users.firstname ) as user_name
+FROM users_cards
+JOIN users ON users.id = user_id
+GROUP BY card_id, list_id
+```
 
+### Après on fait la requete parent
+
+* Donne-moi toutes les lists avec pour chaque lists, la liste des cards associés
+
+```sql
+
+```
+
+### Requete final
+
+```sql
+SELECT lists.id, JSON_AGG(
+
+JSON_BUILD_OBJECT('name',
+r.card_name,
+'users', r.user_name
+))
+
+FROM (
+ 
+SELECT card_id, cards.name as card_name, list_id, 
+JSON_AGG( users.firstname ) as user_name
+FROM users_cards
+JOIN users ON users.id = user_id
+JOIN cards ON cards.id = card_id
+GROUP BY card_id, card_name, list_id
+
+) as r
+JOIN lists ON lists.id = r.list_id
+GROUP BY lists.id
+```
+
+```sql
+DROP view IF EXISTS resu;
+
+CREATE VIEW resu as SELECT card_id, cards.name as card_name, list_id, 
+JSON_AGG( users.firstname ) as user_name
+FROM users_cards
+JOIN users ON users.id = user_id
+JOIN cards ON cards.id = card_id
+GROUP BY card_id, card_name, list_id;
+
+SELECT lists.id, 
+JSON_AGG(
+ JSON_BUILD_OBJECT('name',
+  r.card_name,
+  'users', r.user_name
+ )
+)
+FROM resu as r
+JOIN lists ON lists.id = r.list_id
+GROUP BY lists.id
+```
+
+```sql
+DROP view IF EXISTS resu;
+
+CREATE VIEW resu as SELECT card_id, cards.name as card_name, list_id, 
+JSON_AGG( users.firstname ) as user_name
+FROM users_cards
+JOIN users ON users.id = user_id
+JOIN cards ON cards.id = card_id
+GROUP BY card_id, card_name, list_id;
+
+SELECT lists.id, 
+JSON_AGG(
+ JSON_BUILD_OBJECT('name',
+  r.card_name,
+  'users', r.user_name
+ )
+)
+FROM lists
+JOIN resu as r ON lists.id = r.list_id
+GROUP BY lists.id
+```
 
 
 
