@@ -95,7 +95,9 @@ GROUP BY user_id, users.firstname, users.lastname
 ## Afficher toutes les lists avec pour chacune le nombre de card associés
 
 ```sql
-
+SELECT list_id, COUNT(list_id)
+FROM users_cards 
+GROUP BY list_id
 ```
 
 ## Afficher toutes les lists avec pour chacune le nombre de card associés
