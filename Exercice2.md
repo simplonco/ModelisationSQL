@@ -269,6 +269,12 @@ WHERE list_id = 2
 GROUP BY ...
 ```
 
+## Afficher les users avec leurs cards associées et avec pour chaque cards, la liste des listes associés
+
+## Afficher les users avec leurs lists associées et avec pour chaque list, la liste des cards associés
+
+## Afficher les cards avec leurs lists associées et avec pour chaque list, la liste des users associés
+
 
 
 
